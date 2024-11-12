@@ -57,6 +57,17 @@ void insert_node(struct Node** head, int value){
     return;
 }
 
+// returns true (1) if a node with the desired value exists anywhere in the linked list
+int node_exists(struct Node* head, int value){
+    while (head != NULL){
+        if (head->val == value){
+            return 1;
+        }
+        head = head->next;
+    }
+    return 0;
+}
+
 int main(){
     struct Node* head = NULL;
 
