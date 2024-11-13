@@ -32,6 +32,7 @@ struct Node* make_node(int value){
 
 }
 
+// double pointer to head is passed so the value at the head node can actually be edited, otherwise just a copy of head would be edited
 void insert_node(struct Node** head, int value){
     struct Node* new_node = make_node(value);
 
@@ -68,6 +69,30 @@ int node_exists(struct Node* head, int value){
     return 0;
 }
 
+// removes a node if it exists, returns 1 if successful, 0 if not
+int remove_node(struct Node** head, int value){
+
+    struct Node* temp = *head;
+    struct Node* prev = NULL;
+
+    while (temp != NULL){
+        if (temp->val == value){
+            // if you do not do a null pointer check on prev, you could get a seg fault if the head value is the value to be deleted
+            if (prev){
+                prev->next = temp->next;
+            }
+            else{
+                *head = temp->next;
+            }
+            free(temp);
+            return 1;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+    return 0;
+}
+
 int main(){
     struct Node* head = NULL;
 
@@ -76,6 +101,11 @@ int main(){
     insert_node(&head, 3);
     insert_node(&head, 4);
     insert_node(&head, 5);
+
+    int removal = remove_node(&head, 5);
+
+    if (!removal)
+        puts("node was unable to be deleted in linked list");
 
     print_nodes(head);
 
